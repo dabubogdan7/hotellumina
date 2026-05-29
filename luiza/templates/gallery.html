@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Galerie Foto — Hotel Lumina{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+    <div class="page-hero-bg">
+        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1600&q=80" alt="Galerie Hotel Lumina">
+        <div class="page-hero-overlay"></div>
+    </div>
+    <div class="page-hero-content">
+        <span class="section-label light">Imagini din hotel</span>
+        <h1>Galerie Foto</h1>
+        <p>Explorați frumusețea și eleganța spațiilor noastre</p>
+    </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section gallery-section">
+    <div class="container">
+        <div class="gallery-grid">
+            {% for img in images %}
+            <div class="gallery-item" onclick="openLightbox('{{ img.url }}', '{{ img.title }}')">
+                <img src="{{ img.url }}" alt="{{ img.title }}" loading="lazy">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">{{ img.title }}</span>
+                    <span class="gallery-zoom">🔍</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <img id="lightbox-img" src="" alt="">
+        <p id="lightbox-title"></p>
+    </div>
+</div>
+
+<!-- VIDEO SECTION -->
+<section class="section video-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Atmosferă</span>
+            <h2 class="section-title">Simte experiența Lumina</h2>
+        </div>
+        <div class="video-placeholder">
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80" alt="Hotel Lumina video">
+            <div class="video-play-btn">▶</div>
+            <div class="video-label">Turul virtual al hotelului</div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openLightbox(url, title) {
+    document.getElementById('lightbox-img').src = url;
+    document.getElementById('lightbox-title').textContent = title;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+});
+</script>
+{% endblock %}

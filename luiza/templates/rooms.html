@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Camere & Suite — Hotel Lumina{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+    <div class="page-hero-bg">
+        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1600&q=80" alt="Camere Hotel Lumina">
+        <div class="page-hero-overlay"></div>
+    </div>
+    <div class="page-hero-content">
+        <span class="section-label light">Cazare de lux</span>
+        <h1>Camere & Suite</h1>
+        <p>Descoperă spațiile noastre, fiecare proiectate pentru confort și eleganță</p>
+    </div>
+</section>
+
+<!-- BOOKING BAR -->
+<div class="booking-bar">
+    <div class="booking-container">
+        <div class="booking-field">
+            <label>Check-in</label>
+            <input type="date" id="checkin">
+        </div>
+        <div class="booking-field">
+            <label>Check-out</label>
+            <input type="date" id="checkout">
+        </div>
+        <div class="booking-field">
+            <label>Persoane</label>
+            <select id="guests">
+                <option>1 persoană</option>
+                <option selected>2 persoane</option>
+                <option>3 persoane</option>
+                <option>4 persoane</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="alert('Funcționalitate rezervare — disponibilă în curând!')">Verifică disponibilitatea</button>
+    </div>
+</div>
+
+<!-- ROOMS GRID -->
+<section class="section">
+    <div class="container">
+        <div class="rooms-grid">
+            {% for room in rooms %}
+            <div class="room-card" data-aos="fade-up">
+                <div class="room-card-image">
+                    <img src="{{ room.image }}" alt="{{ room.name }}" loading="lazy">
+                    <div class="room-card-badge">{{ room.size }}</div>
+                </div>
+                <div class="room-card-body">
+                    <div class="room-card-header">
+                        <h3>{{ room.name }}</h3>
+                        <div class="room-guests">👥 max. {{ room.guests }} pers.</div>
+                    </div>
+                    <p class="room-desc">{{ room.description }}</p>
+                    <ul class="room-features">
+                        {% for feature in room.features %}
+                        <li>✓ {{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="room-card-footer">
+                        <div class="room-price">
+                            <span class="price-amount">{{ room.price }} lei</span>
+                            <span class="price-per">/ noapte</span>
+                        </div>
+                        <a href="{{ url_for('booking', room_id=room.id) }}" class="btn btn-primary btn-sm">Rezervă →</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- POLICIES -->
+<section class="section policies-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Informații utile</span>
+            <h2 class="section-title">Politici hotel</h2>
+        </div>
+        <div class="policies-grid">
+            <div class="policy-card">
+                <div class="policy-icon">🕐</div>
+                <h4>Check-in / Check-out</h4>
+                <p>Check-in: după ora <strong>15:00</strong><br>Check-out: până la ora <strong>12:00</strong></p>
+            </div>
+            <div class="policy-card">
+                <div class="policy-icon">🐾</div>
+                <h4>Animale de companie</h4>
+                <p>Animale de companie <strong>nu sunt permise</strong> în incinta hotelului.</p>
+            </div>
+            <div class="policy-card">
+                <div class="policy-icon">🚭</div>
+                <h4>Fumatul</h4>
+                <p>Hotel <strong>100% non-fumători</strong>. Zonele de fumat sunt disponibile în exterior.</p>
+            </div>
+            <div class="policy-card">
+                <div class="policy-icon">💳</div>
+                <h4>Plată</h4>
+                <p>Acceptăm <strong>card și numerar</strong>. Garantarea rezervării se face cu cardul.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

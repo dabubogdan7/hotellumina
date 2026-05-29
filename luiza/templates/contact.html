@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Contact — Hotel Lumina{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<section class="page-hero page-hero-short">
+    <div class="page-hero-bg">
+        <img src="https://images.unsplash.com/photo-1563911302283-d2bc129e7570?w=1600&q=80" alt="Contact Hotel Lumina">
+        <div class="page-hero-overlay"></div>
+    </div>
+    <div class="page-hero-content">
+        <span class="section-label light">Suntem aici pentru tine</span>
+        <h1>Contact</h1>
+        <p>Ai întrebări sau dorești o rezervare? Contactează-ne oricând.</p>
+    </div>
+</section>
+
+<!-- FLASH MESSAGES -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<!-- CONTACT SECTION -->
+<section class="section contact-section">
+    <div class="container">
+        <div class="contact-grid">
+
+            <!-- INFO -->
+            <div class="contact-info">
+                <span class="section-label">Informații</span>
+                <h2>Ajungeți la noi</h2>
+
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div>
+                        <h4>Adresă</h4>
+                        <p>Strada Luminii nr. 12<br>Sector 1, București 010025<br>România</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📞</div>
+                    <div>
+                        <h4>Telefon</h4>
+                        <p>+40 21 123 4567<br>+40 740 123 456 (WhatsApp)</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">✉️</div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>rezervari@hotellumina.ro<br>info@hotellumina.ro</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">🕐</div>
+                    <div>
+                        <h4>Program recepție</h4>
+                        <p>24 ore din 24, 7 zile din 7</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">🚇</div>
+                    <div>
+                        <h4>Cum ajungi</h4>
+                        <p>Metro: Piața Victoriei (10 min)<br>Autobuz: liniile 131, 205, 301<br>Parcare proprie disponibilă</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORM -->
+            <div class="contact-form-wrap">
+                <span class="section-label">Trimite un mesaj</span>
+                <h2>Rezervare sau Întrebare</h2>
+
+                <form class="contact-form" method="POST" action="{{ url_for('contact') }}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nume complet *</label>
+                            <input type="text" id="name" name="name" placeholder="Ion Popescu" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Adresă email *</label>
+                            <input type="email" id="email" name="email" placeholder="ion@email.ro" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Telefon</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+40 7xx xxx xxx">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subiect</label>
+                            <select id="subject" name="subject">
+                                <option value="rezervare">Rezervare cameră</option>
+                                <option value="eveniment">Organizare eveniment</option>
+                                <option value="informatii">Informații generale</option>
+                                <option value="reclamatie">Reclamație / Feedback</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mesaj *</label>
+                        <textarea id="message" name="message" rows="6" placeholder="Descrieți cererea sau întrebarea dumneavoastră..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Trimite mesajul →</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAP PLACEHOLDER -->
+<section class="map-section">
+    <div class="map-placeholder">
+        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1600&q=70" alt="Locație hotel" style="width:100%;height:100%;object-fit:cover;opacity:0.5;">
+        <div class="map-overlay">
+            <div class="map-pin">📍 Hotel Lumina, București</div>
+            <a href="https://maps.google.com" target="_blank" class="btn btn-primary">Deschide în Google Maps</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

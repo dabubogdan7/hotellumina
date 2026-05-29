@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% block title %}Oferte & Pachete — Hotel Lumina{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+    <div class="page-hero-bg">
+        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80" alt="Oferte Hotel Lumina">
+        <div class="page-hero-overlay"></div>
+    </div>
+    <div class="page-hero-content">
+        <span class="section-label light">Prețuri speciale</span>
+        <h1>Oferte & Pachete</h1>
+        <p>Economisește și bucură-te de o experiență completă — rezervă acum, înainte să expire!</p>
+    </div>
+</section>
+
+<!-- URGENCY BANNER -->
+<div class="urgency-banner">
+    <div class="container">
+        🔥 <strong>Oferte limitate</strong> — Prețurile speciale se aplică doar pentru rezervările făcute înainte de data de expirare.
+    </div>
+</div>
+
+<!-- OFFERS -->
+<section class="section offers-section">
+    <div class="container">
+        <div class="offers-grid">
+            {% for offer in offers %}
+            <div class="offer-card" id="offer-{{ offer.id }}">
+
+                <!-- IMAGE + BADGE -->
+                <div class="offer-card-image">
+                    <img src="{{ offer.image }}" alt="{{ offer.name }}" loading="lazy">
+                    <div class="offer-overlay"></div>
+                    <div class="offer-badge" style="background:{{ offer.color }};">{{ offer.badge }}</div>
+                    <div class="offer-discount-badge">−{{ offer.discount }}%</div>
+                    <div class="offer-emoji">{{ offer.emoji }}</div>
+                </div>
+
+                <!-- BODY -->
+                <div class="offer-card-body">
+                    <div class="offer-header">
+                        <h3>{{ offer.name }}</h3>
+                        <p class="offer-tagline">{{ offer.tagline }}</p>
+                    </div>
+
+                    <p class="offer-desc">{{ offer.description }}</p>
+
+                    <!-- INCLUSIONS -->
+                    <ul class="offer-inclusions">
+                        {% for item in offer.inclusions %}
+                        <li>
+                            <span class="check-icon" style="color:{{ offer.color }};">✓</span>
+                            {{ item }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- COUNTDOWN -->
+                    <div class="offer-countdown-wrap">
+                        <p class="countdown-label">⏰ Ofertă valabilă până pe {{ offer.expires }}</p>
+                        <div class="countdown-timer" data-expires="{{ offer.expires }}">
+                            <div class="countdown-unit">
+                                <span class="cu-number" data-type="days">--</span>
+                                <span class="cu-label">zile</span>
+                            </div>
+                            <span class="countdown-colon">:</span>
+                            <div class="countdown-unit">
+                                <span class="cu-number" data-type="hours">--</span>
+                                <span class="cu-label">ore</span>
+                            </div>
+                            <span class="countdown-colon">:</span>
+                            <div class="countdown-unit">
+                                <span class="cu-number" data-type="minutes">--</span>
+                                <span class="cu-label">min</span>
+                            </div>
+                            <span class="countdown-colon">:</span>
+                            <div class="countdown-unit">
+                                <span class="cu-number" data-type="seconds">--</span>
+                                <span class="cu-label">sec</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRICE -->
+                    <div class="offer-price-row">
+                        <div class="offer-prices">
+                            <span class="price-original">{{ offer.original_price }} lei</span>
+                            <div class="price-current">
+                                <span class="price-amount-large">{{ offer.price }} lei</span>
+                                <span class="price-per">/ pachet</span>
+                            </div>
+                            <span class="price-savings">Economisești {{ offer.original_price - offer.price }} lei</span>
+                        </div>
+                        <a href="{{ url_for('booking', room_id=offer.room_id) }}" class="btn btn-primary offer-cta-btn" style="background:{{ offer.color }};">
+                            Rezervă acum →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- WHY BOOK DIRECT -->
+<section class="section direct-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">De ce să rezervi direct?</span>
+            <h2 class="section-title">Avantajele rezervării directe</h2>
+        </div>
+        <div class="direct-grid">
+            <div class="direct-item">
+                <div class="direct-icon">💰</div>
+                <h4>Cel mai bun preț</h4>
+                <p>Garantăm că nu vei găsi un preț mai mic pe nicio altă platformă.</p>
+            </div>
+            <div class="direct-item">
+                <div class="direct-icon">🎁</div>
+                <h4>Beneficii exclusive</h4>
+                <p>Upgrade gratuit la cameră superioară (în funcție de disponibilitate).</p>
+            </div>
+            <div class="direct-item">
+                <div class="direct-icon">🔓</div>
+                <h4>Anulare flexibilă</h4>
+                <p>Anulare gratuită cu până la 48 de ore înainte de check-in.</p>
+            </div>
+            <div class="direct-item">
+                <div class="direct-icon">🛎️</div>
+                <h4>Suport prioritar</h4>
+                <p>Linie telefonică dedicată clienților cu rezervare directă, 24/7.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TERMS -->
+<section class="section terms-section">
+    <div class="container">
+        <div class="terms-box">
+            <h4>📋 Termeni și condiții oferte</h4>
+            <ul>
+                <li>Ofertele sunt valabile exclusiv pentru rezervările efectuate înainte de data de expirare afișată.</li>
+                <li>Prețurile sunt exprimate în lei românești (RON) și includ TVA.</li>
+                <li>Pachetele nu sunt cumulabile cu alte oferte sau reduceri.</li>
+                <li>Anularea gratuită este posibilă cu cel puțin 48 de ore înainte de check-in.</li>
+                <li>Hotelul își rezervă dreptul de a modifica sau retrage ofertele fără notificare prealabilă.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Countdown timers
+document.querySelectorAll('.countdown-timer').forEach(timer => {
+    const expiresStr = timer.dataset.expires;
+    const expires    = new Date(expiresStr + 'T23:59:59');
+
+    function update() {
+        const now  = new Date();
+        const diff = expires - now;
+
+        if (diff <= 0) {
+            timer.innerHTML = '<span style="color:#c00;font-size:.9rem;font-weight:600;">Ofertă expirată</span>';
+            return;
+        }
+
+        const days    = Math.floor(diff / 86400000);
+        const hours   = Math.floor((diff % 86400000) / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+
+        const pad = n => String(n).padStart(2, '0');
+
+        timer.querySelector('[data-type="days"]').textContent    = pad(days);
+        timer.querySelector('[data-type="hours"]').textContent   = pad(hours);
+        timer.querySelector('[data-type="minutes"]').textContent = pad(minutes);
+        timer.querySelector('[data-type="seconds"]').textContent = pad(seconds);
+    }
+
+    update();
+    setInterval(update, 1000);
+});
+</script>
+{% endblock %}

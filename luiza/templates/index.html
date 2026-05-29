@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% block title %}Hotel Lumina — Acasă{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=90" alt="Hotel Lumina" class="hero-img">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+        <p class="hero-tagline">Bun venit la</p>
+        <h1 class="hero-title">Hotel <em>Lumina</em></h1>
+        <p class="hero-subtitle">Unde eleganța se întâlnește cu confortul desăvârșit</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('rooms') }}" class="btn btn-primary">Descoperă camerele</a>
+            <a href="{{ url_for('about') }}" class="btn btn-outline">Despre hotel</a>
+        </div>
+    </div>
+    <div class="hero-scroll">
+        <span>Derulează în jos</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- QUICK STATS -->
+<section class="stats-bar">
+    <div class="stats-container">
+        <div class="stat-item">
+            <span class="stat-number">48</span>
+            <span class="stat-label">Camere & Suite</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">5★</span>
+            <span class="stat-label">Clasificare oficială</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Ani de excelență</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">9.4</span>
+            <span class="stat-label">Rating mediu</span>
+        </div>
+    </div>
+</section>
+
+<!-- INTRO SECTION -->
+<section class="section intro-section">
+    <div class="container">
+        <div class="intro-grid">
+            <div class="intro-text">
+                <span class="section-label">Povestea noastră</span>
+                <h2 class="section-title">Un refugiu de lux în inima orașului</h2>
+                <p>Hotel Lumina este mai mult decât un loc de cazare — este o experiență completă. Îmbinăm arhitectura clasică cu dotările moderne pentru a oferi fiecărui oaspete un sejur de neuitat.</p>
+                <p>De la restaurantul nostru gourmet până la spa-ul de relaxare, fiecare detaliu a fost gândit pentru confortul și plăcerea ta.</p>
+                <a href="{{ url_for('about') }}" class="btn btn-secondary">Aflați mai mult</a>
+            </div>
+            <div class="intro-images">
+                <div class="img-stack">
+                    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80" alt="Hotel interior" class="img-main">
+                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80" alt="Spa" class="img-accent">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section services-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Facilități</span>
+            <h2 class="section-title">Tot ce aveți nevoie</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🍽️</div>
+                <h3>Restaurant Gourmet</h3>
+                <p>Bucătărie rafinată cu ingrediente locale și preparate internaționale, servite în atmosferă elegantă.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💆</div>
+                <h3>Spa & Wellness</h3>
+                <p>Relaxare completă cu masaje, tratamente faciale și saună finlandeză — un sanctuar pentru corp și minte.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🏊</div>
+                <h3>Piscina Infinită</h3>
+                <p>Piscina exterioară cu vedere panoramică, deschisă sezonier, cu șezlonguri și bar la apă.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🏋️</div>
+                <h3>Fitness Center</h3>
+                <p>Sală de sport complet echipată, disponibilă 24 de ore din 24 pentru oaspeții hotelului.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎪</div>
+                <h3>Săli de Conferință</h3>
+                <p>Spații moderne pentru evenimente corporate, dotate cu tehnologie AV de ultimă generație.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🚗</div>
+                <h3>Parcare & Transfer</h3>
+                <p>Parcare privată supravegheată și serviciu de transfer aeroport la solicitare.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED ROOMS -->
+<section class="section featured-rooms">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Cazare</span>
+            <h2 class="section-title">Camerele noastre</h2>
+            <p class="section-desc">Alege dintre o varietate de camere și suite, fiecare concepută pentru confortul tău maxim.</p>
+        </div>
+        <div class="rooms-preview-grid">
+            <div class="room-preview-card large">
+                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80" alt="Suite Panoramică">
+                <div class="room-preview-info">
+                    <h3>Suite Panoramică</h3>
+                    <p>De la <strong>580 lei</strong> / noapte</p>
+                    <a href="{{ url_for('rooms') }}" class="btn btn-primary btn-sm">Vezi detalii</a>
+                </div>
+            </div>
+            <div class="room-preview-card">
+                <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600&q=80" alt="Camera Standard">
+                <div class="room-preview-info">
+                    <h3>Camera Standard</h3>
+                    <p>De la <strong>220 lei</strong> / noapte</p>
+                    <a href="{{ url_for('rooms') }}" class="btn btn-primary btn-sm">Vezi detalii</a>
+                </div>
+            </div>
+            <div class="room-preview-card">
+                <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=80" alt="Suite Prezidențială">
+                <div class="room-preview-info">
+                    <h3>Suite Prezidențială</h3>
+                    <p>De la <strong>1.200 lei</strong> / noapte</p>
+                    <a href="{{ url_for('rooms') }}" class="btn btn-primary btn-sm">Vezi detalii</a>
+                </div>
+            </div>
+        </div>
+        <div class="section-cta">
+            <a href="{{ url_for('rooms') }}" class="btn btn-secondary">Toate camerele →</a>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Recenzii</span>
+            <h2 class="section-title">Ce spun oaspeții noștri</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"Un hotel excepțional! Camera a fost impecabilă, personalul extrem de amabil și mâncarea delicioasă. Cu siguranță vom reveni!"</p>
+                <div class="testimonial-author">
+                    <strong>Maria Ionescu</strong>
+                    <span>București</span>
+                </div>
+            </div>
+            <div class="testimonial-card featured-testimonial">
+                <div class="stars">★★★★★</div>
+                <p>"Am petrecut luna de miere la Hotel Lumina și a fost magic. Serviciul concierge a organizat totul perfect, de la cina romantică la spa."</p>
+                <div class="testimonial-author">
+                    <strong>Alexandru & Andreea</strong>
+                    <span>Cluj-Napoca</span>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"Cel mai bun hotel la care am stat vreodată în România. Piscina cu vedere panoramică și spa-ul sunt absolut incredibile."</p>
+                <div class="testimonial-author">
+                    <strong>Cristina Pavel</strong>
+                    <span>Timișoara</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+    <div class="cta-content">
+        <h2>Rezervă acum și primești mic dejun gratuit</h2>
+        <p>Ofertă valabilă pentru rezervările cu cel puțin 7 zile înainte</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Contactează-ne</a>
+    </div>
+</section>
+
+{% endblock %}

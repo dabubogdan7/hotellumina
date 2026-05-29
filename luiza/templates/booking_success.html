@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}Rezervare Confirmată #{{ booking.id }} — Hotel Lumina{% endblock %}
+
+{% block content %}
+<section class="success-page">
+    <div class="container">
+        <div class="success-card">
+
+            <!-- ICON ANIMAT -->
+            <div class="success-icon-wrap">
+                <div class="success-icon">
+                    <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="check-circle" cx="26" cy="26" r="25" stroke="#2D6A4F" stroke-width="2" fill="none"/>
+                        <path class="check-mark" d="M14 26 L22 34 L38 18" stroke="#2D6A4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- TITLU -->
+            <span class="section-label">Rezervare confirmată</span>
+            <h1 class="success-title">Mulțumim, <em>{{ booking.guest_name.split()[0] }}</em>!</h1>
+            <p class="success-subtitle">
+                Rezervarea ta a fost înregistrată cu succes.
+                {% if booking.guest_email %}
+                    Un email de confirmare a fost trimis la <strong>{{ booking.guest_email }}</strong>.
+                {% endif %}
+            </p>
+
+            <!-- CARD DETALII -->
+            <div class="success-details-card">
+                <div class="success-details-header">
+                    <span>Rezervare #{{ booking.id }}</span>
+                    <span class="booking-status">✓ Confirmată</span>
+                </div>
+
+                <div class="success-room-row">
+                    <img src="{{ booking.room_image }}" alt="{{ booking.room_name }}" class="success-room-img">
+                    <div class="success-room-info">
+                        <h3>{{ booking.room_name }}</h3>
+                        <p>{{ booking.num_guests }} {{ 'persoană' if booking.num_guests == 1 else 'persoane' }}</p>
+                    </div>
+                </div>
+
+                <div class="success-grid">
+                    <div class="success-detail-item">
+                        <span class="sdi-label">Check-in</span>
+                        <span class="sdi-value">{{ booking.check_in }}</span>
+                        <span class="sdi-note">după ora 15:00</span>
+                    </div>
+                    <div class="success-detail-item">
+                        <span class="sdi-label">Check-out</span>
+                        <span class="sdi-value">{{ booking.check_out }}</span>
+                        <span class="sdi-note">până la ora 12:00</span>
+                    </div>
+                    <div class="success-detail-item">
+                        <span class="sdi-label">Durata</span>
+                        <span class="sdi-value">{{ booking.nights }} {{ 'noapte' if booking.nights == 1 else 'nopți' }}</span>
+                    </div>
+                    <div class="success-detail-item highlight">
+                        <span class="sdi-label">Total de plată</span>
+                        <span class="sdi-value gold">{{ "%.0f" | format(booking.total_price) }} lei</span>
+                        <span class="sdi-note">la recepție</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INFO HOTEL -->
+            <div class="success-info-row">
+                <div class="sinfo-item">
+                    <span class="sinfo-icon">📍</span>
+                    <div>
+                        <strong>Adresă</strong>
+                        <p>Str. Luminii 12, București</p>
+                    </div>
+                </div>
+                <div class="sinfo-item">
+                    <span class="sinfo-icon">📞</span>
+                    <div>
+                        <strong>Telefon</strong>
+                        <p>+40 21 123 4567</p>
+                    </div>
+                </div>
+                <div class="sinfo-item">
+                    <span class="sinfo-icon">🛎️</span>
+                    <div>
+                        <strong>Recepție</strong>
+                        <p>24 ore / 7 zile</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACȚIUNI -->
+            <div class="success-actions">
+                <button onclick="window.print()" class="btn btn-secondary">🖨️ Printează confirmarea</button>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">Înapoi la pagina principală</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+.success-page { padding: 5rem 0; background: var(--cream); min-height: 80vh; display: flex; align-items: center; }
+.success-card {
+    max-width: 680px; margin: 0 auto;
+    background: var(--white); border-radius: var(--radius-lg);
+    padding: 3.5rem 3rem; text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+.success-icon-wrap { margin-bottom: 1.75rem; }
+.success-icon { width: 80px; height: 80px; margin: 0 auto; }
+.success-icon svg { width: 100%; height: 100%; }
+.check-circle { stroke-dasharray: 157; stroke-dashoffset: 157; animation: drawCircle .6s ease forwards; }
+.check-mark   { stroke-dasharray: 36; stroke-dashoffset: 36; animation: drawCheck .4s ease .5s forwards; }
+@keyframes drawCircle { to { stroke-dashoffset: 0; } }
+@keyframes drawCheck  { to { stroke-dashoffset: 0; } }
+
+.success-title    { font-size: clamp(1.8rem,4vw,2.6rem); margin-bottom: .75rem; }
+.success-subtitle { font-size: 1rem; color: var(--text-light); margin-bottom: 2.5rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+.success-details-card {
+    background: var(--cream); border-radius: var(--radius); overflow: hidden;
+    border: 1.5px solid var(--sand); margin-bottom: 2rem; text-align: left;
+}
+.success-details-header {
+    background: var(--forest); color: #fff; padding: .9rem 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: .85rem; font-weight: 600;
+}
+.booking-status { color: var(--gold-light); font-size: .8rem; }
+.success-room-row {
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--sand);
+    background: var(--white);
+}
+.success-room-img { width: 80px; height: 60px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.success-room-info h3 { font-size: 1.1rem; margin: 0 0 .2rem; }
+.success-room-info p  { font-size: .85rem; color: var(--text-light); margin: 0; }
+
+.success-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+}
+.success-detail-item {
+    padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: .2rem;
+    border-right: 1px solid var(--sand);
+}
+.success-detail-item:last-child { border-right: none; }
+.success-detail-item.highlight  { background: var(--forest); }
+.sdi-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--text-light); font-weight: 600; }
+.highlight .sdi-label { color: rgba(255,255,255,.6); }
+.sdi-value { font-family: var(--font-serif); font-size: 1.1rem; color: var(--charcoal); font-weight: 600; }
+.sdi-value.gold { color: var(--gold-light); font-size: 1.4rem; }
+.highlight .sdi-value { color: var(--white); }
+.sdi-note  { font-size: .75rem; color: var(--text-light); }
+.highlight .sdi-note  { color: rgba(255,255,255,.5); }
+
+.success-info-row {
+    display: flex; gap: 1.5rem; margin-bottom: 2rem;
+    padding: 1.5rem; background: var(--cream); border-radius: var(--radius);
+    text-align: left;
+}
+.sinfo-item { display: flex; gap: .75rem; align-items: flex-start; flex: 1; }
+.sinfo-icon { font-size: 1.25rem; flex-shrink: 0; }
+.sinfo-item strong { display: block; font-size: .85rem; color: var(--charcoal); }
+.sinfo-item p { margin: .2rem 0 0; font-size: .82rem; color: var(--text-light); }
+
+.success-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 600px) {
+    .success-card { padding: 2.5rem 1.5rem; }
+    .success-grid { grid-template-columns: repeat(2,1fr); }
+    .success-detail-item:nth-child(2) { border-right: none; }
+    .success-detail-item:nth-child(3), .success-detail-item:nth-child(4) { border-top: 1px solid var(--sand); }
+    .success-info-row { flex-direction: column; gap: 1rem; }
+}
+@media print {
+    .navbar, .footer, .success-actions { display: none !important; }
+    .success-card { box-shadow: none; }
+}
+</style>
+{% endblock %}

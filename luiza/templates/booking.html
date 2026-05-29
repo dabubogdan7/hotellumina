@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+{% block title %}Rezervare — {{ room.name }} — Hotel Lumina{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+.flatpickr-calendar { font-family: var(--font-sans); border-radius: 14px; box-shadow: var(--shadow-lg); border: none; }
+.flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--forest); border-color: var(--forest); }
+.flatpickr-day.inRange    { background: rgba(82,183,136,0.2); border-color: transparent; }
+.flatpickr-day.startRange, .flatpickr-day.endRange { background: var(--forest); border-color: var(--forest); }
+.flatpickr-months .flatpickr-month { background: var(--forest); color: #fff; border-radius: 14px 14px 0 0; }
+.flatpickr-current-month .flatpickr-monthDropdown-months { background: var(--forest); color: #fff; }
+.flatpickr-weekday { color: var(--sage); font-weight: 600; }
+.numInputWrapper span.arrowUp::after  { border-bottom-color: #fff; }
+.numInputWrapper span.arrowDown::after{ border-top-color: #fff; }
+.flatpickr-day.flatpickr-disabled, .flatpickr-day.flatpickr-disabled:hover {
+    background: #fee; color: #c00; text-decoration: line-through; opacity: .5;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- BREADCRUMB -->
+<div class="booking-breadcrumb">
+    <div class="container">
+        <a href="{{ url_for('index') }}">Acasă</a> ›
+        <a href="{{ url_for('rooms') }}">Camere</a> ›
+        <span>Rezervare — {{ room.name }}</span>
+    </div>
+</div>
+
+<!-- FLASH MESSAGES -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for cat, msg in messages %}
+        <div class="flash flash-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- BOOKING PAGE -->
+<section class="booking-page">
+    <div class="container">
+        <div class="booking-layout">
+
+            <!-- ── STÂNGA: Formular ───────────────────────── -->
+            <div class="booking-form-col">
+                <div class="booking-section-title">
+                    <span class="section-label">Pasul 1</span>
+                    <h2>Alege perioada</h2>
+                </div>
+
+                <form method="POST" action="{{ url_for('booking', room_id=room.id) }}" id="bookingForm">
+
+                    <!-- CALENDAR VIZUAL -->
+                    <div class="calendar-wrapper">
+                        <div id="inlineCalendar"></div>
+                    </div>
+
+                    <!-- DATE ASCUNSE + GUESTS -->
+                    <div class="dates-row">
+                        <div class="date-display-box" id="checkinDisplay">
+                            <span class="date-label">Check-in</span>
+                            <span class="date-value" id="checkinText">Selectează →</span>
+                            <input type="hidden" name="check_in" id="checkinInput">
+                        </div>
+                        <div class="date-arrow">→</div>
+                        <div class="date-display-box" id="checkoutDisplay">
+                            <span class="date-label">Check-out</span>
+                            <span class="date-value" id="checkoutText">Selectează →</span>
+                            <input type="hidden" name="check_out" id="checkoutInput">
+                        </div>
+                    </div>
+
+                    <div class="guests-row">
+                        <label class="field-label">Număr de persoane</label>
+                        <div class="guests-stepper">
+                            <button type="button" class="stepper-btn" id="decreaseGuests">−</button>
+                            <span id="guestsCount">2</span>
+                            <input type="hidden" name="num_guests" id="guestsInput" value="2">
+                            <button type="button" class="stepper-btn" id="increaseGuests">+</button>
+                            <span class="stepper-label">/ max {{ room.guests }} pers.</span>
+                        </div>
+                    </div>
+
+                    <!-- SEPARATOR -->
+                    <div class="booking-divider">
+                        <span class="section-label">Pasul 2</span>
+                        <h3>Datele tale</h3>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="field-label" for="guest_name">Nume complet *</label>
+                            <input type="text" name="guest_name" id="guest_name" placeholder="Ion Popescu" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" for="guest_email">Email *</label>
+                            <input type="email" name="guest_email" id="guest_email" placeholder="ion@email.ro" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label" for="guest_phone">Telefon</label>
+                        <input type="tel" name="guest_phone" id="guest_phone" placeholder="+40 7xx xxx xxx">
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label" for="special_requests">Cereri speciale</label>
+                        <textarea name="special_requests" id="special_requests" rows="3" placeholder="Etaj preferat, tip de pat, alte solicitări..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-submit-booking" id="submitBtn" disabled>
+                        Confirmă rezervarea →
+                    </button>
+                    <p class="submit-note">* Nu se percepe nicio taxă acum. Plata se face la recepție.</p>
+                </form>
+            </div>
+
+            <!-- ── DREAPTA: Sumar ─────────────────────────── -->
+            <div class="booking-summary-col">
+                <div class="booking-summary-card sticky-summary">
+
+                    <!-- Room Preview -->
+                    <div class="summary-room">
+                        <img src="{{ room.image }}" alt="{{ room.name }}" class="summary-room-img">
+                        <div class="summary-room-info">
+                            <h4>{{ room.name }}</h4>
+                            <span>{{ room.size }} · max. {{ room.guests }} pers.</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <!-- Dates summary -->
+                    <div class="summary-dates">
+                        <div class="summary-date-item">
+                            <span class="sd-label">Check-in</span>
+                            <span class="sd-value" id="sumCheckin">—</span>
+                        </div>
+                        <div class="summary-date-item">
+                            <span class="sd-label">Check-out</span>
+                            <span class="sd-value" id="sumCheckout">—</span>
+                        </div>
+                        <div class="summary-date-item">
+                            <span class="sd-label">Nopți</span>
+                            <span class="sd-value" id="sumNights">—</span>
+                        </div>
+                        <div class="summary-date-item">
+                            <span class="sd-label">Persoane</span>
+                            <span class="sd-value" id="sumGuests">2</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <!-- Price breakdown -->
+                    <div class="summary-price-breakdown" id="priceBreakdown" style="display:none;">
+                        <div class="pb-row">
+                            <span id="pbDesc">350 lei × 1 noapte</span>
+                            <span id="pbSub">350 lei</span>
+                        </div>
+                        <div class="pb-row pb-row-total">
+                            <span>Total</span>
+                            <span id="pbTotal">350 lei</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-empty" id="summaryEmpty">
+                        <span>📅</span>
+                        <p>Selectează datele pentru a vedea prețul total</p>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="summary-features">
+                        {% for f in room.features %}
+                        <span class="sf-tag">✓ {{ f }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="summary-guarantee">
+                        🔒 Rezervare gratuită &amp; fără taxe anticipate
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ro.js"></script>
+<script>
+const ROOM_PRICE    = {{ room.price }};
+const MAX_GUESTS    = {{ room.guests }};
+const OCCUPIED      = {{ occupied_ranges | tojson }};
+const TODAY         = "{{ today }}";
+
+// Generează toate datele dintr-un interval (check_in inclus, check_out exclus)
+function datesInRange(from, to) {
+    const out = [];
+    const cur = new Date(from);
+    const end = new Date(to);
+    while (cur < end) {
+        out.push(cur.toISOString().split('T')[0]);
+        cur.setDate(cur.getDate() + 1);
+    }
+    return out;
+}
+
+const disabledDates = [];
+OCCUPIED.forEach(r => datesInRange(r.from, r.to).forEach(d => disabledDates.push(d)));
+
+let checkinDate  = null;
+let checkoutDate = null;
+
+const fp = flatpickr("#inlineCalendar", {
+    inline: true,
+    mode: "range",
+    minDate: TODAY,
+    locale: "ro",
+    disable: disabledDates,
+    dateFormat: "Y-m-d",
+    showMonths: window.innerWidth > 768 ? 2 : 1,
+    onChange: function(selectedDates) {
+        if (selectedDates.length >= 1) {
+            checkinDate = selectedDates[0].toISOString().split('T')[0];
+            document.getElementById('checkinInput').value  = checkinDate;
+            document.getElementById('checkinText').textContent = formatDate(selectedDates[0]);
+            document.getElementById('sumCheckin').textContent  = formatDate(selectedDates[0]);
+            document.getElementById('checkinDisplay').classList.add('filled');
+        }
+        if (selectedDates.length === 2) {
+            checkoutDate = selectedDates[1].toISOString().split('T')[0];
+            document.getElementById('checkoutInput').value  = checkoutDate;
+            document.getElementById('checkoutText').textContent = formatDate(selectedDates[1]);
+            document.getElementById('sumCheckout').textContent  = formatDate(selectedDates[1]);
+            document.getElementById('checkoutDisplay').classList.add('filled');
+            updatePrice();
+        } else {
+            checkoutDate = null;
+            document.getElementById('checkoutInput').value = '';
+            document.getElementById('checkoutText').textContent = 'Selectează →';
+            document.getElementById('sumCheckout').textContent = '—';
+            document.getElementById('checkoutDisplay').classList.remove('filled');
+            document.getElementById('priceBreakdown').style.display = 'none';
+            document.getElementById('summaryEmpty').style.display = 'flex';
+            document.getElementById('sumNights').textContent = '—';
+            document.getElementById('submitBtn').disabled = true;
+        }
+    },
+    onDayCreate: function(dObj, dStr, fp, dayElem) {
+        const d = dayElem.dateObj?.toISOString().split('T')[0];
+        if (d && disabledDates.includes(d)) {
+            dayElem.title = 'Cameră ocupată';
+        }
+    }
+});
+
+function formatDate(date) {
+    return date.toLocaleDateString('ro-RO', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function updatePrice() {
+    if (!checkinDate || !checkoutDate) return;
+    const d1 = new Date(checkinDate);
+    const d2 = new Date(checkoutDate);
+    const nights = Math.round((d2 - d1) / 86400000);
+    if (nights < 1) return;
+    const total = nights * ROOM_PRICE;
+
+    document.getElementById('sumNights').textContent = nights + (nights === 1 ? ' noapte' : ' nopți');
+    document.getElementById('pbDesc').textContent  = `${ROOM_PRICE} lei × ${nights} ${nights === 1 ? 'noapte' : 'nopți'}`;
+    document.getElementById('pbSub').textContent   = total.toLocaleString('ro-RO') + ' lei';
+    document.getElementById('pbTotal').textContent = total.toLocaleString('ro-RO') + ' lei';
+    document.getElementById('priceBreakdown').style.display = 'block';
+    document.getElementById('summaryEmpty').style.display   = 'none';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = `Confirmă rezervarea — ${total.toLocaleString('ro-RO')} lei →`;
+}
+
+// Guests stepper
+let guestsCount = 2;
+document.getElementById('decreaseGuests').addEventListener('click', () => {
+    if (guestsCount > 1) {
+        guestsCount--;
+        document.getElementById('guestsCount').textContent = guestsCount;
+        document.getElementById('guestsInput').value       = guestsCount;
+        document.getElementById('sumGuests').textContent   = guestsCount;
+    }
+});
+document.getElementById('increaseGuests').addEventListener('click', () => {
+    if (guestsCount < MAX_GUESTS) {
+        guestsCount++;
+        document.getElementById('guestsCount').textContent = guestsCount;
+        document.getElementById('guestsInput').value       = guestsCount;
+        document.getElementById('sumGuests').textContent   = guestsCount;
+    }
+});
+
+// Validare înainte de submit
+document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    if (!checkinDate || !checkoutDate) {
+        e.preventDefault();
+        alert('Te rugăm să selectezi datele de check-in și check-out.');
+        return false;
+    }
+    // Verifică dacă intervalul conține date blocate
+    const d1 = new Date(checkinDate);
+    const d2 = new Date(checkoutDate);
+    const cur = new Date(d1);
+    while (cur < d2) {
+        const ds = cur.toISOString().split('T')[0];
+        if (disabledDates.includes(ds)) {
+            e.preventDefault();
+            alert('Perioada selectată include date când camera este ocupată. Te rugăm să alegi alte date.');
+            return false;
+        }
+        cur.setDate(cur.getDate() + 1);
+    }
+});
+</script>
+{% endblock %}
